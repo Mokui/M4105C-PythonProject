@@ -14,3 +14,6 @@ class Equipment(object):
         self.id = id
         self.name = name
         self.installation_id = installation_id
+
+    def __str__(self) :
+        return "name"

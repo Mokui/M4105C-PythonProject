@@ -7,7 +7,7 @@ from pprint import pprint
 
 
 
-def parseActivities():
+def parse_activities():
     """
     Parsing datas from activities.json and creating Activity and EquipActiv 
     objects from those datas
@@ -16,8 +16,9 @@ def parseActivities():
     datas = json.load(data_file)
 
     datas_list = datas["data"]
-    pprint(datas_list)
-    activities, equip_activties = []
+
+    activities = equip_activities = []
+
     for data in datas_list :
         code = data["ActCode"]
         name = data["ActLib"]
@@ -27,11 +28,11 @@ def parseActivities():
         activities.append(activity)
 
         equip_activity = EquipActiv(code, equip_id)
-        equip_activties.append(equip_activity)
+        equip_activities.append(equip_activity)
 
-    return activities, equip_activities
+    return [activities, equip_activities]
 
-def parseInstallations():
+def parse_installations():
     """
     Parsing datas from installations.json and creating Installation objects
     from those datas
@@ -41,10 +42,8 @@ def parseInstallations():
 
     datas_list = datas["data"]
 
-
     installations = []
     for data in datas_list :
-        #print(data["InsNoVoie"])
         code = data["InsNumeroInstall"]
         name = data["geo"]["name"]
         address =  None
@@ -64,10 +63,10 @@ def parseInstallations():
         installation = Installation(code, name, address, postal_code, city, latitude, longitude)
         installations.append(installation)
 
-        return installations
+    return installations
 
 
-def parseEquipments():
+def parse_equipments():
     """
     Parsing datas from equipments.json and creating Equipment objects
     from those datas
@@ -85,8 +84,8 @@ def parseEquipments():
         name = data["EquNom"]
         installation_id = data["InsNumeroInstall"]
 
-        equipment = Equiment(code, name, installation_id, activities)
-        equipment.append(equipment)
+        equipment = Equipment(code, name, installation_id)
+        equipments.append(equipment)
 
-        return equipments
+    return equipments
 
