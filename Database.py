@@ -4,7 +4,7 @@ def main():
     database = "database.db"
 
     bddInstall = """CREATE TABLE IF NOT EXISTS installation_table(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         adress VARCHAR(255),
         postalcode VARCHAR,
@@ -14,7 +14,7 @@ def main():
           """
 
     bddEquip = """CREATE TABLE IF NOT EXISTS equipement_table(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         id_install INTEGER,
         FOREIGN KEY(id_install) REFERENCES installation_table(id));
@@ -28,7 +28,7 @@ def main():
           """
 
     bddActiv = """CREATE TABLE IF NOT EXISTS activity_table(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL);
           """
 
