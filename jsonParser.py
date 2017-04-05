@@ -9,7 +9,7 @@ from pprint import pprint
 
 def parse_activities():
     """
-    Parsing datas from activities.json and creating Activity and EquipActiv 
+    Parsing datas from activities.json and creating Activity and EquipActiv
     objects from those datas
     """
     data_file = open('files/activities.json')
@@ -17,20 +17,21 @@ def parse_activities():
 
     datas_list = datas["data"]
 
-    activities = equip_activities = []
+    activities = []
+    equip_activities = []
 
     for data in datas_list :
         code = data["ActCode"]
         name = data["ActLib"]
         equip_id = data["EquipementId"]
-        
+
         activity = Activity(code,name)
         activities.append(activity)
 
         equip_activity = EquipActiv(code, equip_id)
         equip_activities.append(equip_activity)
 
-    return [activities, equip_activities]
+    return activities, equip_activities
 
 def parse_installations():
     """
@@ -47,14 +48,14 @@ def parse_installations():
         code = data["InsNumeroInstall"]
         name = data["geo"]["name"]
         address =  None
-        
+
         if data["InsNoVoie"] is not None :
             if data["InsLibelleVoie"] is not None:
                 address = data["InsNoVoie"] + " " + data["InsLibelleVoie"]
         else :
             if data["InsLibelleVoie"] is not None:
                 address = data["InsLibelleVoie"]
-        
+
         postal_code = data["InsCodePostal"]
         city = data["ComLib"]
         latitude = data["_l"][1]
@@ -76,10 +77,10 @@ def parse_equipments():
 
     datas_list = datas["data"]
 
-    equipments = [] 
+    equipments = []
 
     for data in datas_list :
-        
+
         code = data["EquipementId"]
         name = data["EquNom"]
         installation_id = data["InsNumeroInstall"]
@@ -88,4 +89,3 @@ def parse_equipments():
         equipments.append(equipment)
 
     return equipments
-

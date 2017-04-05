@@ -37,6 +37,7 @@ def main():
 
     if conn is not None:
         try:
+            #delete all tables if they exists
             deleteAllBDD(conn)
         except Exception as e:
             print(e)
