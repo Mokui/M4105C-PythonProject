@@ -14,7 +14,6 @@ def parse_activities():
     """
     data_file = open('files/activities.json')
     datas = json.load(data_file)
-    pprint(datas)
     datas_list = datas["data"]
 
     activities = []
@@ -34,10 +33,10 @@ def parse_activities():
 
         activity = Activity(code,name)
         activities.append(activity)
-        id_set.append(code) 
+        id_set.append(code)
 
     return activities, equip_activities
-    
+
 
 def parse_installations():
     """

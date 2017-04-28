@@ -14,7 +14,7 @@ def main():
         longitude DECIMAL);
           """
 
-    bddEquip = """CREATE TABLE IF NOT EXISTS equipement_table(
+    bddEquip = """CREATE TABLE IF NOT EXISTS equipment_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         id_install INTEGER,
@@ -24,7 +24,7 @@ def main():
     bddEquipActiv = """CREATE TABLE IF NOT EXISTS equip_activ_table(
         id_equip INTEGER,
         id_activity INTEGER,
-        FOREIGN KEY(id_equip) REFERENCES equipement_table(id),
+        FOREIGN KEY(id_equip) REFERENCES equipment_table(id),
         FOREIGN KEY(id_activity) REFERENCES activity_table(id));
           """
 
@@ -59,7 +59,7 @@ def main():
 def deleteAllBDD(conn):
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS installation_table")
-    c.execute("DROP TABLE IF EXISTS equipement_table")
+    c.execute("DROP TABLE IF EXISTS equipment_table")
     c.execute("DROP TABLE IF EXISTS equip_activ_table")
     c.execute("DROP TABLE IF EXISTS activity_table")
 
@@ -71,7 +71,7 @@ def deleteBDDInstall():
 # Delete equipment table
 def deleteBDDEquip():
     c = conn.cursor()
-    c.execute("DROP TABLE IF EXISTS equipement_table")
+    c.execute("DROP TABLE IF EXISTS equipment_table")
 
 # Delete activity table
 def deleteBDDActivity():
@@ -122,7 +122,7 @@ def insert_activity(conn, activity):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO activity_table VALUES({}, {})".format(activity.id, activity.name)
+        query = "INSERT INTO activity_table VALUES({}, \"{}\");".format(activity.id, activity.name)
         c.execute(query)
     except Exception as e :
         print(e)
@@ -136,7 +136,7 @@ def insert_equipment(conn, equipment):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO equipement_table values({},{},{})".format(equipment.id, equipment.name, equipment.installation_id)
+        query = "INSERT INTO equipment_table values({},\"{}\",{});".format(equipment.id, equipment.name, equipment.installation_id)
         c.execute(query)
     except Exception as e:
         print(e)
@@ -150,8 +150,8 @@ def insert_installation(conn,installation):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO installation_table VALUES({}, {}, {}, {}, {}, {}, {})\
-        ".format(installation.id, installation.name, installation.adress, installation.postalcode, installation.city, installation.latitude, installation.longitude)
+        query = "INSERT INTO installation_table VALUES({}, \"{}\", \"{}\", {}, \"{}\", {}, {});\
+        ".format(installation.id, installation.name, installation.adress, installation.postal_code, installation.city, installation.latitude, installation.longitude)
         c.execute(query)
     except Exception as e :
         print(e)
@@ -165,7 +165,7 @@ def insert_equip_activ(conn,equip_activ):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO equipement_table values({},{})".format(equipment.activity_id, equipment.equipment_id)
+        query = "INSERT INTO equip_activ_table values({},{});".format(equip_activ.activity_id, equip_activ.equipment_id)
         c.execute(query)
     except Exception as e:
         print(e)
