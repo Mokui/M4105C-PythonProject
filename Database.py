@@ -128,8 +128,18 @@ def insert_activity(conn, activity):
         print(e)
 
 # Method to insert a row in Equipment
-def insert_equipment(equipment):
-    pass
+def insert_equipment(conn, equipment):
+    """ insert a row of Equipment in database
+    :param conn: Connection object
+    :param equipment: the equipment needed to INSERT into the database
+    :return:
+    """
+    try:
+        c = conn.cursor()
+        query = "INSERT INTO equipement_table values({},{},{})".format(equipment.id, equipment.name, equipment.installation_id)
+        c.execute(query)
+    except Exception as e:
+        print(e)
 
 # Method to insert a row in Installation
 def insert_installation(conn,installation):
@@ -153,6 +163,12 @@ def insert_equip_activ(conn,equip_activ):
     :param equip_activ: the equip_activ needed to INSERT into the database
     :return:
     """
+    try:
+        c = conn.cursor()
+        query = "INSERT INTO equipement_table values({},{})".format(equipment.activity_id, equipment.equipment_id)
+        c.execute(query)
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     main()
