@@ -26,5 +26,8 @@ def main():
     for install in list_installations:
         insert_installation(conn, install)
 
+    conn.commit()
+    conn.close()
+    
 if __name__ == '__main__':
     main()
