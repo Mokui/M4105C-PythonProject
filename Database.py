@@ -1,4 +1,5 @@
 import sqlite3
+from jsonParser import *
 
 def main():
     database = "database.db"
@@ -110,6 +111,22 @@ def create_table(conn, create_table_sql):
         c.execute(create_table_sql)
     except Exception as e:
         print(e)
+
+
+# Method to insert a row in Activity
+def insert_activity(activity):
+    pass
+
+# Method to insert a row in Equipment
+def insert_equipment(equipment):
+    pass
+
+# Method to insert a row in Installation
+def insert_installation(installation):
+    pass
+
+# Method to insert a row in EquipActiv
+def insert_equip_activ(equip_activ):
 
 if __name__ == '__main__':
     main()
