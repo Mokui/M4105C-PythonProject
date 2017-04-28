@@ -14,7 +14,7 @@ def parse_activities():
     """
     data_file = open('files/activities.json')
     datas = json.load(data_file)
-    pprint(datas)
+    
     datas_list = datas["data"]
 
     activities = []
@@ -26,6 +26,9 @@ def parse_activities():
         name = data["ActLib"]
         equip_id = data["EquipementId"]
 
+        if code == None :
+            continue
+
         equip_activity = EquipActiv(code, equip_id)
         equip_activities.append(equip_activity)
 
@@ -34,10 +37,10 @@ def parse_activities():
 
         activity = Activity(code,name)
         activities.append(activity)
-        id_set.append(code) 
+        id_set.append(code)
+       
 
     return activities, equip_activities
-    
 
 def parse_installations():
     """
@@ -54,6 +57,9 @@ def parse_installations():
         code = data["InsNumeroInstall"]
         name = data["geo"]["name"]
         address =  None
+
+        if code == None :
+            continue
 
         if data["InsNoVoie"] is not None :
             if data["InsLibelleVoie"] is not None:
@@ -90,6 +96,9 @@ def parse_equipments():
         code = data["EquipementId"]
         name = data["EquNom"]
         installation_id = data["InsNumeroInstall"]
+
+        if code == None :
+            continue
 
         equipment = Equipment(code, name, installation_id)
         equipments.append(equipment)
