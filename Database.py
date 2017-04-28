@@ -114,19 +114,45 @@ def create_table(conn, create_table_sql):
 
 
 # Method to insert a row in Activity
-def insert_activity(activity):
-    pass
+def insert_activity(conn, activity):
+    """ insert a row of Activity in database
+    :param conn: Connection object
+    :param activity: the activity needed to INSERT into the database
+    :return:
+    """
+    try:
+        c = conn.cursor()
+        query = "INSERT INTO activity_table VALUES({}, {})".format(activity.id, activity.name)
+        c.execute(query)
+    except Exception as e :
+        print(e)
 
 # Method to insert a row in Equipment
 def insert_equipment(equipment):
     pass
 
 # Method to insert a row in Installation
-def insert_installation(installation):
-    pass
+def insert_installation(conn,installation):
+    """ insert a row of Installation in database
+    :param conn: Connection object
+    :param installation: the installation needed to INSERT into the database
+    :return:
+    """
+    try:
+        c = conn.cursor()
+        query = "INSERT INTO installation_table VALUES({}, {}, {}, {}, {}, {}, {})\
+        ".format(installation.id, installation.name, installation.adress, installation.postalcode, installation.city, installation.latitude, installation.longitude)
+        c.execute(query)
+    except Exception as e :
+        print(e)
 
 # Method to insert a row in EquipActiv
-def insert_equip_activ(equip_activ):
+def insert_equip_activ(conn,equip_activ):
+    """ insert a row of EquipActiv in database
+    :param conn: Connection object
+    :param equip_activ: the equip_activ needed to INSERT into the database
+    :return:
+    """
 
 if __name__ == '__main__':
     main()

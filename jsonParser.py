@@ -14,24 +14,30 @@ def parse_activities():
     """
     data_file = open('files/activities.json')
     datas = json.load(data_file)
-
+    pprint(datas)
     datas_list = datas["data"]
 
     activities = []
     equip_activities = []
+    id_set = []
 
     for data in datas_list :
         code = data["ActCode"]
         name = data["ActLib"]
         equip_id = data["EquipementId"]
 
-        activity = Activity(code,name)
-        activities.append(activity)
-
         equip_activity = EquipActiv(code, equip_id)
         equip_activities.append(equip_activity)
 
+        if code in id_set :
+            continue
+
+        activity = Activity(code,name)
+        activities.append(activity)
+        id_set.append(code) 
+
     return activities, equip_activities
+    
 
 def parse_installations():
     """
