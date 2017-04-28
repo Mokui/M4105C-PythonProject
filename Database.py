@@ -8,7 +8,7 @@ def main():
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         adress VARCHAR(255),
-        postalcode VARCHAR,
+        postalcode VARCHAR(5),
         city VARCHAR,
         latitude DECIMAL,
         longitude DECIMAL);
@@ -150,7 +150,7 @@ def insert_installation(conn,installation):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO installation_table VALUES({}, \"{}\", \"{}\", {}, \"{}\", {}, {});\
+        query = "INSERT INTO installation_table VALUES({}, \"{}\", \"{}\", \"{}\", \"{}\", {}, {});\
         ".format(installation.id, installation.name, installation.adress, installation.postal_code, installation.city, installation.latitude, installation.longitude)
         c.execute(query)
     except Exception as e :
