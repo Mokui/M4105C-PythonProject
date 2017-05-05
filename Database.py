@@ -122,8 +122,8 @@ def insert_activity(conn, activity):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO activity_table VALUES({}, \"{}\");".format(activity.id, activity.name)
-        c.execute(query)
+        query = "INSERT INTO activity_table VALUES(?, ?);"
+        c.execute(query,(activity.id, activity.name))
     except Exception as e :
         print(e)
 
@@ -136,8 +136,8 @@ def insert_equipment(conn, equipment):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO equipment_table values({},\"{}\",{});".format(equipment.id, equipment.name, equipment.installation_id)
-        c.execute(query)
+        query = "INSERT INTO equipment_table values(?,?,?);"
+        c.execute(query, (equipment.id, equipment.name, equipment.installation_id))
     except Exception as e:
         print(e)
 
@@ -150,9 +150,8 @@ def insert_installation(conn,installation):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO installation_table VALUES({}, \"{}\", \"{}\", \"{}\", \"{}\", {}, {});\
-        ".format(installation.id, installation.name, installation.adress, installation.postal_code, installation.city, installation.latitude, installation.longitude)
-        c.execute(query)
+        query = "INSERT INTO installation_table VALUES(?, ?, ?, ?, ?, ?, ?);"
+        c.execute(query, (installation.id, installation.name, installation.adress, installation.postal_code, installation.city, installation.latitude, installation.longitude))
     except Exception as e :
         print(e)
 
@@ -165,10 +164,40 @@ def insert_equip_activ(conn,equip_activ):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO equip_activ_table values({},{});".format(equip_activ.activity_id, equip_activ.equipment_id)
-        c.execute(query)
+        query = "INSERT INTO equip_activ_table values(?,?);"
+        c.execute(query, (equip_activ.activity_id, equip_activ.equipment_id))
     except Exception as e:
         print(e)
+
+def getPosition(conn,installation_id):
+    """ give the position latitude/longitude of a given installation with his ID
+    :param conn: Connection object
+    :param installation_id: the installation ID needed to get the latitude/longitude informations
+    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    """
+    try:
+        c = conn.cursor()
+        query = "SELECT i.latitude, i.longitude FROM installation_table i where installation_table.id == ?);"
+        c.execute(query, installation_id)
+        statement = c.fetchone()
+    except Exception as e:
+        print(e)
+    return statement
+
+def getInstallation(conn,installation_id):
+    """ give the name; address; postal code; city of the given installation with his ID
+    :param conn: Connection object
+    :param installation_id: the installation ID needed to get the informations
+    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    """
+    try:
+        c = conn.cursor()
+        query = "SELECT i.name, i.address, i.postal_code, i.city FROM installation_table i where installation_table.id == ?);"
+        c.execute(query, installation_id)
+        statement = c.fetchone()
+    except Exception as e:
+        print(e)
+    return statement
 
 if __name__ == '__main__':
     main()
