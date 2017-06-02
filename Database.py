@@ -170,5 +170,31 @@ def insert_equip_activ(conn,equip_activ):
     except Exception as e:
         print(e)
 
+
+
+def getActivity(conn, activity_id) :
+    try :
+        c = conn.cursor()
+        query = "SELECT a.nom FROM activity_table a where a.id = ?"
+        c.execute(query, activity_id)
+        statement = c.fetchone()
+    except Exception as e :
+        print(e)
+
+    return statement
+
+
+def getActivity(conn, equipment_id) :
+    try :
+        c = conn.cursor()
+        query = "SELECT e.nom, e.installation FROM equipment_table e where e.id = ?"
+        c.execute(query, equipment_id)
+        statement = c.fetchone()
+    except Exception as e :
+        print(e)
+
+    return statement
+
+def get
 if __name__ == '__main__':
     main()
