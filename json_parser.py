@@ -14,6 +14,8 @@ def parse_activities():
     """
     data_file = open('files/activities.json')
     datas = json.load(data_file)
+
+    # getting the list of json objects
     datas_list = datas["data"]
 
     activities = []
@@ -21,24 +23,31 @@ def parse_activities():
     id_set = []
 
     for data in datas_list :
+
         code = data["ActCode"]
         name = data["ActLib"]
         equip_id = data["EquipementId"]
 
+        # if the json activity don't have an id we skip it and continue to the next one
         if code == None :
             continue
 
+        # creating the EquipActiv object and appending it to the list
         equip_activity = EquipActiv(equip_id, code)
         equip_activities.append(equip_activity)
 
+        # there are some duplicate activities in the file so we check if its already in the list
+        # if its so, we skip it and continue to the next one
         if code in id_set :
             continue
 
+        # creating the Activity object and appending it to the list
         activity = Activity(code,name)
         activities.append(activity)
         id_set.append(code)
 
     return activities, equip_activities
+
 
 def parse_installations():
     """
@@ -48,6 +57,7 @@ def parse_installations():
     data_file = open('files/installations.json')
     datas = json.load(data_file)
 
+     # getting the list of json objects
     datas_list = datas["data"]
 
     installations = []
@@ -56,9 +66,11 @@ def parse_installations():
         name = data["geo"]["name"]
         address =  None
 
+         # if the json installation don't have an id we skip it and continue to the next one
         if code == None :
             continue
 
+        # creating the address field
         if data["InsNoVoie"] is not None :
             if data["InsLibelleVoie"] is not None:
                 address = data["InsNoVoie"] + " " + data["InsLibelleVoie"]
@@ -71,6 +83,7 @@ def parse_installations():
         latitude = data["_l"][1]
         longitude = data["_l"][0]
 
+        # creating the Installation object and appending it to the list
         installation = Installation(code, name, address, postal_code, city, latitude, longitude)
         installations.append(installation)
 
@@ -85,7 +98,9 @@ def parse_equipments():
     data_file = open('files/equipments.json')
     datas = json.load(data_file)
 
+    # getting the list of json objects
     datas_list = datas["data"]
+
     equipments = []
 
     for data in datas_list :
@@ -95,9 +110,11 @@ def parse_equipments():
         familly = data["FamilleFicheLib"]
         installation_id = data["InsNumeroInstall"]
 
+        # if the json equipment don't have an id we skip it and continue to the next one
         if code == None :
             continue
 
+        # creating the Equipment object and appending it to the list
         equipment = Equipment(code, name, familly, installation_id)
         equipments.append(equipment)
 

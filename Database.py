@@ -1,10 +1,13 @@
 import sqlite3
-from jsonParser import *
+from json_parser import *
 
 def main():
+    """
+    This method create the file database.db and create all the 4th tables we need
+    """
     database = "database.db"
 
-    bddInstall = """CREATE TABLE IF NOT EXISTS installation_table(
+    bdd_install = """CREATE TABLE IF NOT EXISTS installation_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         address VARCHAR(255),
@@ -14,7 +17,7 @@ def main():
         longitude DECIMAL);
           """
 
-    bddEquip = """CREATE TABLE IF NOT EXISTS equipment_table(
+    bdd_equip = """CREATE TABLE IF NOT EXISTS equipment_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
         familly VARCHAR,
@@ -22,14 +25,14 @@ def main():
         FOREIGN KEY(id_install) REFERENCES installation_table(id));
           """
 
-    bddEquipActiv = """CREATE TABLE IF NOT EXISTS equip_activ_table(
+    bdd_equip_activ = """CREATE TABLE IF NOT EXISTS equip_activ_table(
         id_equip INTEGER,
         id_activity INTEGER,
         FOREIGN KEY(id_equip) REFERENCES equipment_table(id),
         FOREIGN KEY(id_activity) REFERENCES activity_table(id));
           """
 
-    bddActiv = """CREATE TABLE IF NOT EXISTS activity_table(
+    bdd_activ = """CREATE TABLE IF NOT EXISTS activity_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL);
           """
@@ -40,15 +43,15 @@ def main():
     if conn is not None:
         try:
             #delete all tables if they exists
-            deleteAllBDD(conn)
+            delete_all_db(conn)
         except Exception as e:
             print(e)
 
         # create the table
-        create_table(conn, bddInstall)
-        create_table(conn, bddEquip)
-        create_table(conn, bddEquipActiv)
-        create_table(conn, bddActiv)
+        create_table(conn, bdd_install)
+        create_table(conn, bdd_equip)
+        create_table(conn, bdd_equip_activ)
+        create_table(conn, bdd_activ)
 
     else:
         print("Error! cannot create the database connection.")
@@ -57,7 +60,7 @@ def main():
     conn.close()
 
 # Delete table
-def deleteAllBDD(conn):
+def delete_all_db(conn):
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS installation_table")
     c.execute("DROP TABLE IF EXISTS equipment_table")
@@ -65,22 +68,22 @@ def deleteAllBDD(conn):
     c.execute("DROP TABLE IF EXISTS activity_table")
 
 # Delete installation table
-def deleteBDDInstall():
+def delete_table_install():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS installation_table")
 
 # Delete equipment table
-def deleteBDDEquip():
+def delete_table_equip():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS equipment_table")
 
 # Delete activity table
-def deleteBDDActivity():
+def delete_table_activity():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS activity_table")
 
 # Delete joint table
-def deleteBDDEquipActiv():
+def delete_table_equip_activ():
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS equip_activ_table")
 
@@ -112,7 +115,6 @@ def create_table(conn, create_table_sql):
         c.execute(create_table_sql)
     except Exception as e:
         print(e)
-
 
 # Method to insert a row in Activity
 def insert_activity(conn, activity):
@@ -152,7 +154,7 @@ def insert_installation(conn,installation):
     try:
         c = conn.cursor()
         query = "INSERT INTO installation_table VALUES(?, ?, ?, ?, ?, ?, ?);"
-        c.execute(query, (installation.id, installation.name, installation.adress, installation.postal_code, installation.city, installation.latitude, installation.longitude))
+        c.execute(query, (installation.id, installation.name, installation.address, installation.postal_code, installation.city, installation.latitude, installation.longitude))
     except Exception as e :
         print(e)
 
@@ -170,19 +172,35 @@ def insert_equip_activ(conn,equip_activ):
     except Exception as e:
         print(e)
 
-
-def getActivity(conn, activity_id) :
+def get_activity(conn, activity_id) :
+    """
+    Give the activity matched with the given id
+    :param conn: Connection object
+    :param activity_id: the activity ID needed to get the information
+    :return activity: the Activity object if matched, None if not
+    """
     try :
+        activity = None
         c = conn.cursor()
         query = "SELECT a.name FROM activity_table a where a.id = ?"
         c.execute(query, (activity_id, ))
         statement = c.fetchone()
+        if statement != None :
+            activity = Activity(activity_id, statement[1])
     except Exception as e :
         print(e)
 
-    return statement
+    return activity
 
-def getActivitiesByEquipmentAndName(conn, equipment_id, name) :
+def get_activities_by_equipment_and_name(conn, equipment_id, name) :
+    """
+    Give a list of activities that matched with the given equipment_id
+    and a part of the activity name.
+    :param conn: Connection object
+    :param equipment_id: the equipment ID needed to get the information
+    :param name: A part of the activity's name searched
+    :return activity: a list of Activity object if matched, an empty list if not
+    """
     activities = []
     name = "%" + name + "%"
     try :
@@ -200,25 +218,33 @@ def getActivitiesByEquipmentAndName(conn, equipment_id, name) :
     return activities
 
 
-def getEquipment(conn, equipment_id) :
+def get_equipment(conn, equipment_id) :
+    """
+    Give the equipment matched with the given id
+    :param conn: Connection object
+    :param equipment_id: the equipment ID needed to get the information
+    :return equipment: the Equipment object if matched, None if not
+    """
     try :
+        equipment = None
         c = conn.cursor()
         query = "SELECT e.nom, e.familly, e.installation  FROM equipment_table e where e.id = ?"
         c.execute(query, (equipment_id, ))
         statement = c.fetchone()
 
-        equipment = Equipment(equipment_id, statement[0], statement[1], statement[2])
+        if statement != None :
+            equipment = Equipment(equipment_id, statement[0], statement[1], statement[2])
     except Exception as e :
         print(e)
 
     return equipment
 
 
-def getEquipmentsByInstallation(conn, installation_id):
+def get_equipments_by_installation(conn, installation_id):
     """ give all the Equipment objects that have this installation_id 
     :param conn: Connection object
     :param installation_id: the installation ID needed to get the informations
-    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    :return equipments: a list of Equipment object if matched, an empty list if not
     """
     try:
         statement = None
@@ -236,53 +262,57 @@ def getEquipmentsByInstallation(conn, installation_id):
     return equipments
 
 
-def getPosition(conn,installation_id):
+def get_position(conn,installation_id):
     """ give the position latitude/longitude of a given installation with his ID
     :param conn: Connection object
     :param installation_id: the installation ID needed to get the latitude/longitude informations
-    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    :return position: a list of two floating numbers if found, an empty list if not
     """
     try:
+        position = []
         c = conn.cursor()
         query = "SELECT i.latitude, i.longitude FROM installation_table i where installation_table.id == ?);"
         c.execute(query, (installation_id, ))
         statement = c.fetchone()
+
+        if statement != None :
+                position.extends(statement)
     except Exception as e:
         print(e)
-    return statement
+    return position
 
-def getInstallation(conn,installation_id):
+def get_installation(conn,installation_id):
     """ give the name; address; postal code; city of the given installation with his ID
     :param conn: Connection object
     :param installation_id: the installation ID needed to get the informations
-    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    :return installation: the Installation object if matched, None if not
     """
     try:
+        installation = None
         c = conn.cursor()
         query = "SELECT i.name, i.address, i.postal_code, i.city, i.latitude, i.longitude FROM installation_table i where installation_table.id == ?);"
         c.execute(query, (installation_id,))
         statement = c.fetchone()
 
-
-        installation = Installation(installation_id, statement[0], statement[1], statement[2], statement[3], statement[4], statement[5])
+        if statement != None :
+            installation = Installation(installation_id, statement[0], statement[1], statement[2], statement[3], statement[4], statement[5])
     except Exception as e:
         print(e)
     return installation
 
-def getInstallationsByCity(conn, city):
+def get_installations_by_city(conn, city):
     """ give the name; address; postal code; city of the given installation with his ID
     :param conn: Connection object
     :param installation_id: the installation ID needed to get the informations
-    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    :return installations: a list of Installation object if matched, an empty list if not
     """
     try:
-        statement = None
+        installations = []
         c = conn.cursor()
-        query = "SELECT i.id, i.name, i.address, i.postal_code, i.latitude, i.longitude FROM installation_table i where i.city == ? and 1 = 1"
+        query = "SELECT i.id, i.name, i.address, i.postal_code, i.latitude, i.longitude FROM installation_table i where i.city == ? order by i.id"
         c.execute(query, (city,))
         statement = c.fetchall()
 
-        installations = []
         for obj in statement :
             installations.append(Installation(obj[0], obj[1], obj[2], obj[3], city, obj[4], obj[5]))
     except Exception as e:

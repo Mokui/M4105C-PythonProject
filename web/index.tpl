@@ -28,89 +28,86 @@
     </div>
 	<div class="row">
 			<div class="col-md-12">
-				<form class="form-horizontal" action="login" method="post">
+				<form class="form-horizontal" action="index" method="post">
 						<fieldset>
 							<legend>Recherche par activité</legend>
 
 							<div class="form-group">
-									<label for="example-text-input" class="col-lg-2 control-label">Activité</label>
-									<div class="col-lg-2">
-											<input class="form-control" type="text" id="example-text-input" name="activity">
-									</div>
+								<label for="example-text-input" class="col-lg-2 control-label">Activité</label>
+								<div class="col-lg-2">
+										<input class="form-control" type="text" id="example-text-input" name="activity">
+								</div>
 
-		              <label for="select" class="col-lg-2 control-label">Ville</label>
-		              <div class="col-lg-2">
-		                  <select class="form-control" name="city">
-		                      <option>Nantes</option>
-		                      <option>Paris</option>
-		                      <option>Lyon</option>
-		                      <option>Gland</option>
-		                      <option>New York</option>
-
-		                      <option>Héric</option>
-		                  </select>
-		              </div>
-										<div class="col-lg-2 col-lg-offset-2">
-												<button type="submit" class="btn btn-default">Valider</button>
-										</div>
-			          </div>
-
+					            <label for="select" class="col-lg-2 control-label">Ville</label>
+					            <div class="col-lg-2">
+					            	<select class="form-control" name="city">
+						                <option>Nantes</option>
+						                <option>Pornic</option>
+						                <option>Vertou</option>
+						                <option>Carquefou</option>
+					                </select>
+					            </div>
+								<div class="col-lg-2 col-lg-offset-2">
+									<button type="submit" class="btn btn-default">Valider</button>
+								</div>
+			         		</div>
 						</fieldset>
 				</form>
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="panel panel-success">
-				<!-- Default panel contents -->
-			  <div class="panel-heading"><h5>#2543541 Complexe sportif</h5></div>
-			  <div class="panel-body">
-					<span>Informations:</span>
-					<ul style="list-style:none;">
-						<li><span style="padding:10px;" class="glyphicon glyphicon-flag" aria-hidden="true"></span>Beaulieu 44000 Nantes
-						<li><span style="padding:10px;" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>latitude 000 longitude 000
-					</ul>
-			  </div>
+		%for installation in dict_installation_equipments :
 
-				<div class="panel-heading">Equipements</div>
-					<div class="panel-body">
-						<table class="table">
-						  <thead>
-						    <tr>
-						      <th>#</th>
-						      <th>Nom</th>
-						      <th>Type</th>
-						      <th>Activité</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr>
-						      <th scope="row">1</th>
-						      <td>Mark</td>
-						      <td>Otto</td>
-						      <td>@mdo</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">2</th>
-						      <td>Jacob</td>
-						      <td>Thornton</td>
-						      <td>@fat</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">3</th>
-						      <td>Larry</td>
-						      <td>the Bird</td>
-						      <td>@twitter</td>
-						    </tr>
-						  </tbody>
-						</table>
+			<div class="row" style="margin-bottom: 20px;">
+				<div class="panel panel-success">
+					<!-- Default panel contents -->
+				  <div class="panel-heading"><h5>#{{installation.id}} {{installation.name}}</h5></div>
+				  <div class="panel-body">
+						<span>Informations:</span>
+						<ul style="list-style:none;">
+							<li><span style="padding:10px;" class="glyphicon glyphicon-flag" aria-hidden="true"></span>{{installation.address}} {{installation.postal_code}} {{installation.city}}
+							<li><span style="padding:10px;" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>latitude {{installation.latitude}} longitude {{installation.longitude}}
+						</ul>
+				  </div>
+
+					<div class="panel-heading">Equipements</div>
+						<div class="panel-body">
+							<table class="table">
+							  <thead>
+							    <tr>
+							      <th>#</th>
+							      <th>Nom</th>
+							      <th>Type</th>
+							      <th>Activité</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							%for equipment in dict_installation_equipments[installation] :
+								<tr>
+								      <th scope="row">{{equipment.id}}</th>
+								      <td>{{equipment.name}}</td>
+								      <td>{{equipment.familly}}</td>
+								      <td>
+								      %i = 0
+								      %for activity in equipment.activities :
+								      	%if(i != 0) :
+								      		,
+								      	%end
+								      	{{activity.name}}
+								      %end
+								      </td>
+								    </tr>
+							    <tr>
+							%end     
+							  </tbody>
+							</table>
+						</div>
 					</div>
-			</div>
-		</div>
-
-		<div class="row">
+				</div>
+			%end
+		<!--<div class="row">
 			<div id="map" style="margin: 0 auto 0 auto;width:90%;height:500px;">OUI LA MAP</div>
-		</div>
+		</div>-->
 
 		<div class="modal-body row">
 	  </div>
