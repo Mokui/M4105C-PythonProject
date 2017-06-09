@@ -7,8 +7,8 @@ def main():
     bddInstall = """CREATE TABLE IF NOT EXISTS installation_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
-        adress VARCHAR(255),
-        postalcode VARCHAR(5),
+        address VARCHAR(255),
+        postal_code VARCHAR(5),
         city VARCHAR,
         latitude DECIMAL,
         longitude DECIMAL);
@@ -173,8 +173,8 @@ def insert_equip_activ(conn,equip_activ):
 def getActivity(conn, activity_id) :
     try :
         c = conn.cursor()
-        query = "SELECT a.nom FROM activity_table a where a.id = ?"
-        c.execute(query, activity_id)
+        query = "SELECT a.name FROM activity_table a where a.id = ?"
+        c.execute(query, (activity_id, ))
         statement = c.fetchone()
     except Exception as e :
         print(e)
@@ -186,7 +186,7 @@ def getEquipment(conn, equipment_id) :
     try :
         c = conn.cursor()
         query = "SELECT e.nom, e.installation FROM equipment_table e where e.id = ?"
-        c.execute(query, equipment_id)
+        c.execute(query, (equipment_id, ))
         statement = c.fetchone()
     except Exception as e :
         print(e)
@@ -203,7 +203,7 @@ def getPosition(conn,installation_id):
     try:
         c = conn.cursor()
         query = "SELECT i.latitude, i.longitude FROM installation_table i where installation_table.id == ?);"
-        c.execute(query, installation_id)
+        c.execute(query, (installation_id, ))
         statement = c.fetchone()
     except Exception as e:
         print(e)
@@ -217,11 +217,52 @@ def getInstallation(conn,installation_id):
     """
     try:
         c = conn.cursor()
-        query = "SELECT i.name, i.address, i.postal_code, i.city FROM installation_table i where installation_table.id == ?);"
-        c.execute(query, installation_id)
+        query = "SELECT i.name, i.address, i.postal_code, i.city, i.latitude, i.longitude FROM installation_table i where installation_table.id == ?);"
+        c.execute(query, (installation_id,))
         statement = c.fetchone()
+
+
+        installation = Installation(installation_id, statement[0], statement[1], statement[2], statement[3], statement[4], statement[5])
     except Exception as e:
         print(e)
+    return installation
+
+def getInstallationsByCity(conn, city):
+    """ give the name; address; postal code; city of the given installation with his ID
+    :param conn: Connection object
+    :param installation_id: the installation ID needed to get the informations
+    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    """
+    try:
+        statement = None
+        c = conn.cursor()
+        query = "SELECT i.id, i.name, i.address, i.postal_code, i.latitude, i.longitude FROM installation_table i where i.city == ? and 1 = 1"
+        c.execute(query, (city,))
+        statement = c.fetchall()
+
+        installations = []
+        for obj in statement :
+            installations.append(Installation(obj[0], obj[1], obj[2], obj[3], city, obj[4], obj[5]))
+    except Exception as e:
+        print(e)
+
+    return installations
+
+def getInstallationsByCityAndActivity(conn, city):
+    """ give the name; address; postal code; city of the given installation with his ID
+    :param conn: Connection object
+    :param installation_id: the installation ID needed to get the informations
+    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    """
+    try:
+        statement = None
+        c = conn.cursor()
+        query = "SELECT i.id, i.name, i.address, i.postal_code,      FROM installation_table i where i.city == ? and 1 = 1"
+        c.execute(query, (city,))
+        statement = c.fetchall()
+    except Exception as e:
+        print(e)
+
     return statement
 
 if __name__ == '__main__':
