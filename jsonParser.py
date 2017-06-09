@@ -92,12 +92,13 @@ def parse_equipments():
 
         code = data["EquipementId"]
         name = data["EquNom"]
+        familly = data["FamilleFicheLib"]
         installation_id = data["InsNumeroInstall"]
 
         if code == None :
             continue
 
-        equipment = Equipment(code, name, installation_id)
+        equipment = Equipment(code, name, familly, installation_id)
         equipments.append(equipment)
 
     return equipments
