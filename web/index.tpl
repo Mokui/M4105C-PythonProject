@@ -19,7 +19,7 @@
 </nav>
 <div class="container">
     <div class="page-header">
-        <h1>Welcome to Sportive Search</h1>
+        <h1>Bienvenue sur la plateforme SportSearch!</h1>
     </div>
 	<div class="row">
 			<div class="col-md-12">
@@ -43,13 +43,11 @@
 		                      <option>New York</option>
 		                  </select>
 		              </div>
-		          </div>
 
-							<div class="form-group">
-									<div class="col-lg-10 col-lg-offset-2">
-											<button type="submit" class="btn btn-default">Submit</button>
+									<div class="col-lg-2 col-lg-offset-2">
+											<button type="submit" class="btn btn-default">Valider</button>
 									</div>
-							</div>
+		          </div>
 
 					</fieldset>
 			</form>
