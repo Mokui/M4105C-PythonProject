@@ -17,6 +17,7 @@ def main():
     bddEquip = """CREATE TABLE IF NOT EXISTS equipment_table(
         id INTEGER PRIMARY KEY,
         name VARCHAR NOT NULL,
+        familly VARCHAR,
         id_install INTEGER,
         FOREIGN KEY(id_install) REFERENCES installation_table(id));
           """
@@ -136,8 +137,8 @@ def insert_equipment(conn, equipment):
     """
     try:
         c = conn.cursor()
-        query = "INSERT INTO equipment_table values(?,?,?);"
-        c.execute(query, (equipment.id, equipment.name, equipment.installation_id))
+        query = "INSERT INTO equipment_table values(?,?,?,?);"
+        c.execute(query, (equipment.id, equipment.name, equipment.familly, equipment.installation_id))
     except Exception as e:
         print(e)
 
@@ -181,17 +182,57 @@ def getActivity(conn, activity_id) :
 
     return statement
 
+def getActivitiesByEquipment(conn, equipment_id) :
+    try :
+        c = conn.cursor()
+        query = "SELECT a.id, a.name FROM activity_table a, equip_activ_table ea where ea.id_equip = ? and a.id = ea.id_activity"
+        c.execute(query, (equipment_id, ))
+        statement = c.fetchall()
+
+        activities = []
+        for obj in statement :
+            activities.append(Activity(obj[0], obj[1]))
+
+    except Exception as e :
+        print(e)
+
+    return activities
+
 
 def getEquipment(conn, equipment_id) :
     try :
         c = conn.cursor()
-        query = "SELECT e.nom, e.installation FROM equipment_table e where e.id = ?"
+        query = "SELECT e.nom, e.familly, e.installation  FROM equipment_table e where e.id = ?"
         c.execute(query, (equipment_id, ))
         statement = c.fetchone()
+
+        equipment = Equipment(equipment_id, statement[0], statement[1], statement[2])
     except Exception as e :
         print(e)
 
-    return statement
+    return equipment
+
+
+def getEquipmentByInstallation(conn, installation_id):
+    """ give all the Equipment objects that have this installation_id 
+    :param conn: Connection object
+    :param installation_id: the installation ID needed to get the informations
+    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
+    """
+    try:
+        statement = None
+        c = conn.cursor()
+        query = "SELECT e.id, e.name, e.familly FROM equipment_table e where e.id_install == ? and 1 = 1 order by e.id"
+        c.execute(query, (installation_id,))
+        statement = c.fetchall()
+
+        equipments = []
+        for obj in statement :
+            equipments.append(Equipment(obj[0], obj[1], obj[2], obj[3], installation_id))
+    except Exception as e:
+        print(e)
+
+    return equipments
 
 
 def getPosition(conn,installation_id):
@@ -248,22 +289,6 @@ def getInstallationsByCity(conn, city):
 
     return installations
 
-def getInstallationsByCityAndActivity(conn, city):
-    """ give the name; address; postal code; city of the given installation with his ID
-    :param conn: Connection object
-    :param installation_id: the installation ID needed to get the informations
-    :return statement: Fetches the next row of a query result set, or None when no more data is available for the ID selected
-    """
-    try:
-        statement = None
-        c = conn.cursor()
-        query = "SELECT i.id, i.name, i.address, i.postal_code,      FROM installation_table i where i.city == ? and 1 = 1"
-        c.execute(query, (city,))
-        statement = c.fetchall()
-    except Exception as e:
-        print(e)
-
-    return statement
 
 if __name__ == '__main__':
     main()
