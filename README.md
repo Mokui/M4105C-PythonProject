@@ -6,12 +6,24 @@ This project had for goal to put in place a python database with an UI that allo
 
 ## Installation
 
-To launch this project, just clone the git repository, go in the folder just created then launch with:
+To launch this project, just clone the git repository, go in the folder just created.
+
+First of all you have to create the database :
+```
+$> python3 Database.py
+$> python3 initializer_database.py
+```
+
+Now to launch the web server : 
+
 ```
 $> python3 server.py
 ```
 
-Then you can go at localhost:8079/login ; or 127.0.1:8079/login
+Then you can go at
+ ```
+localhost:8079/index
+```
 
 ## API Reference
 
