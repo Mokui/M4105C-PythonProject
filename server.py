@@ -1,17 +1,21 @@
 
-from bottle import get, post, request, run, route, template, error
+from bottle import get, post, request, run, route, template, error, static_file
 
-@route('/hello/<name>')
+@route("/hello/<name>")
 def index(name):
     return template('template', name=name)
 
-@route("/css/<filename>")
+@route("/web/bootstrap/css/<filename>")
 def style(filename):
-    return static_file(filename, root='web/css/')
+    return static_file(filename, root='web/bootstrap/css')
+
+@route("/web/bootstrap/fonts/<filename>")
+def style(filename):
+    return static_file(filename, root='web/bootstrap/fonts')
 
 @route("/img/<filename>")
 def img(filename):
-	return static_file(filename,root="web/img/")
+	return static_file(filename,root='web/img/')
 
 @route("/js/<filename>")
 def script(filename):
@@ -26,13 +30,14 @@ def error404(error):
 
 @get('/login')
 def login():
-    return '''
-        <form action="/login" method="post">
-            Username: <input name="username" type="text">
-            Password: <input name="password" type="password">
-            <input value="Login" type="submit">
-        </form>
-    '''
+    return template('web/index.tpl')
+    # '''
+    #     <form action="/login" method="post">
+    #         Username: <input name="username" type="text">
+    #         Password: <input name="password" type="password">
+    #         <input value="Login" type="submit">
+    #     </form>
+    # '''
 
 
 @post('/login')
