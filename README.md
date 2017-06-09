@@ -31,6 +31,13 @@ This project use :
   Bottle (for the server)
   Bootstrap (for the html)
 
+## OpenData sources
+
+	http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-fiches-installations/
+
+	http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-fiches-equipements
+
+	http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-activites-des-fiches-equ
 ## Contributors
 
 Tristan ELAIN - DUT Info 2 - 2017
