@@ -22,4 +22,5 @@ This project use :
 ## Contributors
 
 Tristan ELAIN - DUT Info 2 - 2017
+
 Yanis DANDO - DUT Info 2 - 2017
