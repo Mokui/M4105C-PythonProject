@@ -21,34 +21,35 @@
         </button>
         <a class="navbar-brand" href="#">M4105C-Python Project</a>
     </div>
-	</nav>
-	<div class="container">
-	    <div class="page-header">
-	        <h1>Bienvenue sur la plateforme SportSearch!</h1>
-	    </div>
-		<div class="row">
-				<div class="col-md-12">
-					<form class="form-horizontal" action="search" method="post">
-							<fieldset>
-								<legend>Recherche par activité</legend>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>Bienvenue sur la plateforme SportSearch!</h1>
+    </div>
+	<div class="row">
+			<div class="col-md-12">
+				<form class="form-horizontal" action="login" method="post">
+						<fieldset>
+							<legend>Recherche par activité</legend>
 
-								<div class="form-group">
-										<label for="example-text-input" class="col-lg-2 control-label">Activité</label>
-										<div class="col-lg-2">
-												<input class="form-control" type="text" id="example-text-input">
-										</div>
+							<div class="form-group">
+									<label for="example-text-input" class="col-lg-2 control-label">Activité</label>
+									<div class="col-lg-2">
+											<input class="form-control" type="text" id="example-text-input" name="activity">
+									</div>
 
-			              <label for="select" class="col-lg-2 control-label">Ville</label>
-			              <div class="col-lg-2">
-			                  <select class="form-control" name="activite">
-			                      <option>Nantes</option>
-			                      <option>Paris</option>
-			                      <option>Lyon</option>
-			                      <option>Gland</option>
-			                      <option>New York</option>
-			                  </select>
-			              </div>
+		              <label for="select" class="col-lg-2 control-label">Ville</label>
+		              <div class="col-lg-2">
+		                  <select class="form-control" name="city">
+		                      <option>Nantes</option>
+		                      <option>Paris</option>
+		                      <option>Lyon</option>
+		                      <option>Gland</option>
+		                      <option>New York</option>
 
+		                      <option>Héric</option>
+		                  </select>
+		              </div>
 										<div class="col-lg-2 col-lg-offset-2">
 												<button type="submit" class="btn btn-default">Valider</button>
 										</div>
