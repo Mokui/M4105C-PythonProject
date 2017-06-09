@@ -23,24 +23,26 @@
     </div>
 	<div class="row">
 			<div class="col-md-12">
-				<form class="form-horizontal" action="search" method="post">
+				<form class="form-horizontal" action="login" method="post">
 						<fieldset>
 							<legend>Recherche par activité</legend>
 
 							<div class="form-group">
 									<label for="example-text-input" class="col-lg-2 control-label">Activité</label>
 									<div class="col-lg-2">
-											<input class="form-control" type="text" id="example-text-input">
+											<input class="form-control" type="text" id="example-text-input" name="activity">
 									</div>
 
 		              <label for="select" class="col-lg-2 control-label">Ville</label>
 		              <div class="col-lg-2">
-		                  <select class="form-control" name="activite">
+		                  <select class="form-control" name="city">
 		                      <option>Nantes</option>
 		                      <option>Paris</option>
 		                      <option>Lyon</option>
 		                      <option>Gland</option>
 		                      <option>New York</option>
+
+		                      <option>Héric</option>
 		                  </select>
 		              </div>
 

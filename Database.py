@@ -182,16 +182,17 @@ def getActivity(conn, activity_id) :
 
     return statement
 
-def getActivitiesByEquipment(conn, equipment_id) :
+def getActivitiesByEquipmentAndName(conn, equipment_id, name) :
+    activities = []
+    name = "%" + name + "%"
     try :
         c = conn.cursor()
-        query = "SELECT a.id, a.name FROM activity_table a, equip_activ_table ea where ea.id_equip = ? and a.id = ea.id_activity"
-        c.execute(query, (equipment_id, ))
+        query = "SELECT a.id, a.name FROM activity_table a, equip_activ_table ea where ea.id_equip = ? and a.id = ea.id_activity and a.name LIKE ?"
+        c.execute(query, (equipment_id, name, ))
         statement = c.fetchall()
 
-        activities = []
         for obj in statement :
-            activities.append(Activity(obj[0], obj[1]))
+        	activities.append(Activity(obj[0], obj[1]))
 
     except Exception as e :
         print(e)
@@ -213,7 +214,7 @@ def getEquipment(conn, equipment_id) :
     return equipment
 
 
-def getEquipmentByInstallation(conn, installation_id):
+def getEquipmentsByInstallation(conn, installation_id):
     """ give all the Equipment objects that have this installation_id 
     :param conn: Connection object
     :param installation_id: the installation ID needed to get the informations
@@ -228,7 +229,7 @@ def getEquipmentByInstallation(conn, installation_id):
 
         equipments = []
         for obj in statement :
-            equipments.append(Equipment(obj[0], obj[1], obj[2], obj[3], installation_id))
+            equipments.append(Equipment(obj[0], obj[1], obj[2], installation_id))
     except Exception as e:
         print(e)
 

@@ -1,5 +1,6 @@
 
 from bottle import get, post, request, run, route, template, error, static_file
+from Database import *
 
 @route("/hello/<name>")
 def index(name):
@@ -42,13 +43,31 @@ def login():
 
 @post('/login')
 def do_login():
-    username = request.forms.get('username')
-    password = request.forms.get('password')
+    conn = create_connection("database.db")
 
-    if username == "admin" and password == "123":
-        return "<p>Your login information was correct.</p>"
-    else:
-        return "<p>Login failed.</p>"
+    activityRequest = request.forms.get('activity')
+    city = request.forms.get('city')
+
+    installations = getInstallationsByCity(conn, city)
+    string = ""
+    dict_installation_equipments = {}
+    for installation in installations :
+        string = string + "<p> installation : " + installation.name + " nb Equipments : "
+        i = 0
+        equipments = getEquipmentsByInstallation(conn, installation.id)
+        for equipment in equipments :
+            i = i+1
+            activities = getActivitiesByEquipmentAndName(conn, equipment.id, activityRequest)
+            for activity in activities :
+                print(str(activity))
+            equipment.addActivities(activities)
+        dict_installation_equipments[installation] = equipments
+
+        string = string + str(i) + "<p>"
+        
+
+
+    return string
 
 
 run(host='localhost', port=8079)

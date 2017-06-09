@@ -28,7 +28,7 @@ def parse_activities():
         if code == None :
             continue
 
-        equip_activity = EquipActiv(code, equip_id)
+        equip_activity = EquipActiv(equip_id, code)
         equip_activities.append(equip_activity)
 
         if code in id_set :
